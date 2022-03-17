@@ -199,7 +199,7 @@ class PathSelectionByDateIntervalTask(EventLogSelectionDownstreamMixin, luigi.Wr
         if luigi.contrib.hdfs.exists(source):
             # listdir raises an exception if the source doesn't exist.
             for source in luigi.contrib.hdfs.listdir(source, recursive=True):
-                yield source
+                yield "hdfs://" + re.split("[/]+", "hdfs://localhost:9000/sarah-edu/logfiles/")[1] + source
 
     def _get_local_urls(self, source):
         """Recursively list all files inside the source directory on the local filesystem."""
