@@ -62,11 +62,13 @@ class PathSetTask(luigi.Task):
                     source = url_path_join(src, path)
                     yield ExternalURL(source)
             elif src.startswith('hdfs'):
+                base_domain = re.split("[/]+", src)[1]
+
                 for source, size in luigi.contrib.hdfs.listdir(src, recursive=True, include_size=True):
                     if not self.include_zero_length and size == 0:
                         continue
                     elif any(fnmatch.fnmatch(source, include_val) for include_val in self.include):
-                        yield ExternalURL(source)
+                        yield ExternalURL("hdfs://" + base_domain + source)
             else:
                 # Apply the include patterns to the relative path below the src directory.
                 # TODO: implement exclude_zero_length to match S3 case.
@@ -196,10 +198,11 @@ class PathSelectionByDateIntervalTask(EventLogSelectionDownstreamMixin, luigi.Wr
 
     def _get_hdfs_urls(self, source):
         """Recursively list all files inside the source directory on the hdfs filesystem."""
+        base_domain = re.split("[/]+", source)[1]
         if luigi.contrib.hdfs.exists(source):
             # listdir raises an exception if the source doesn't exist.
             for source in luigi.contrib.hdfs.listdir(source, recursive=True):
-                yield "hdfs://" + re.split("[/]+", "hdfs://localhost:9000/sarah-edu/logfiles/")[1] + source
+                yield "hdfs://" + base_domain + source
 
     def _get_local_urls(self, source):
         """Recursively list all files inside the source directory on the local filesystem."""
