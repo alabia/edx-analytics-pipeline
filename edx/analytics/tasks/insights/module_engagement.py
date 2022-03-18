@@ -362,7 +362,8 @@ class ModuleEngagementIntervalTask(MapReduceJobTaskMixin, EventLogSelectionDowns
                 n_reduce_tasks=self.n_reduce_tasks,
                 warehouse_path=self.warehouse_path,
                 overwrite=should_overwrite or self.overwrite_mysql,
-                overwrite_hive=should_overwrite
+                overwrite_hive=should_overwrite,
+                allow_empty_insert=True,
             )
 
     def output(self):
