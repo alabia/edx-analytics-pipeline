@@ -302,6 +302,7 @@ class CourseActivityPartitionTask(WeeklyIntervalMixin, UserActivityDownstreamMix
             ),
             CalendarTableTask(
                 warehouse_path=self.warehouse_path,
+                interval=self.interval,
             )
         )
 
