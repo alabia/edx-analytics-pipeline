@@ -861,6 +861,7 @@ class ModuleEngagementUserSegmentDataTask(ModuleEngagementDownstreamMixin, Overw
             date=self.date,
             n_reduce_tasks=self.n_reduce_tasks,
             overwrite_from_date=self.overwrite_from_date,
+            allow_empty_insert=True,
         )
         return {
             'range_data': mysql_task.insert_source_task,
@@ -1454,6 +1455,7 @@ class ModuleEngagementWorkflowTask(ModuleEngagementDownstreamMixin, ModuleEngage
             date=self.date,
             overwrite_from_date=overwrite_from_date,
             n_reduce_tasks=self.n_reduce_tasks,
+            allow_empty_insert=True,
         )
 
     def output(self):
